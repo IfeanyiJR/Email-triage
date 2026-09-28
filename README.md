@@ -92,6 +92,37 @@ The script creates these labels if they do not already exist:
 
 It also creates a parent label called `Triage` when needed.
 
+## Screenshot
+
+Add your Gmail or terminal screenshot here to show the project in action:
+
+![Email triage example](docs/email-triage-screenshot.png)
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Unread Gmail messages] --> B[Python triage script]
+    B --> C[Gmail API]
+    B --> D[Extract message text]
+    D --> E[Claude classification]
+    E --> F[Category verdict]
+    F --> G[Apply Gmail label]
+    G --> H[processed.json]
+    H --> I[No duplicate processing]
+
+    E --> J[urgent / needs_reply / fyi / newsletter / low_priority]
+    J --> G
+```
+
+The script does the following:
+
+1. Reads unread messages from Gmail
+2. Pulls the message body and metadata
+3. Sends the content to Claude with a strict classification prompt
+4. Maps the response to a Gmail label
+5. Stores the processed message IDs locally to keep reruns idempotent
+
 ## Notes
 
 - The first run may open a browser so you can approve Gmail access.
